@@ -3,6 +3,7 @@ package com.example.postexplorer.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postexplorer.model.Post
+import com.example.postexplorer.network.RetrofitInstance
 import com.example.postexplorer.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,9 @@ sealed class PostsUiState {
     data class Error(val message: String) : PostsUiState()
 }
 
-class PostViewModel(private val repository: PostRepository) : ViewModel() {
+class PostViewModel : ViewModel() {
+
+    private val repository = PostRepository(RetrofitInstance.api)
 
     private val _uiState = MutableStateFlow<PostsUiState>(PostsUiState.Loading)
     val uiState: StateFlow<PostsUiState> = _uiState.asStateFlow()
